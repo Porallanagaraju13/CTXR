@@ -1,6 +1,7 @@
 import os
 import tempfile
 import logging
+import asyncio
 from pathlib import Path
 from typing import Optional
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, status
@@ -35,6 +36,30 @@ app.add_middleware(
 )
 
 SUPPORTED_FORMATS = [".pdf", ".docx", ".pptx", ".png", ".jpg", ".jpeg", ".webp"]
+
+# ── Keep-Alive Self-Ping (prevents Render free tier cold starts) ─────────
+KEEP_ALIVE_INTERVAL = 13 * 60  # 13 minutes (Render sleeps after 15 min)
+RENDER_SERVICE_URL = os.getenv("RENDER_EXTERNAL_URL", "https://contextforge-kub5.onrender.com")
+
+async def _keep_alive_pinger():
+    """Background task that pings /health every 13 minutes to prevent Render sleep."""
+    import httpx
+    await asyncio.sleep(60)  # Wait 1 min after startup before first ping
+    while True:
+        try:
+            async with httpx.AsyncClient(timeout=10) as client:
+                resp = await client.get(f"{RENDER_SERVICE_URL}/health")
+                logger.info(f"[Keep-Alive] Pinged /health → {resp.status_code}")
+        except Exception as e:
+            logger.warning(f"[Keep-Alive] Ping failed: {e}")
+        await asyncio.sleep(KEEP_ALIVE_INTERVAL)
+
+@app.on_event("startup")
+async def start_keep_alive():
+    """Launch keep-alive pinger only in production (on Render)."""
+    if os.getenv("ENVIRONMENT") == "production":
+        asyncio.create_task(_keep_alive_pinger())
+        logger.info(f"[Keep-Alive] Background pinger started (every {KEEP_ALIVE_INTERVAL}s)")
 
 @app.get("/health", status_code=status.HTTP_200_OK)
 async def health_check():

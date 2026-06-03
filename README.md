@@ -19,7 +19,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Token_Savings-40–70%25-7B2FFF?style=flat-square" />
   <img src="https://img.shields.io/badge/Tests-61_Passing-22C55E?style=flat-square" />
-  <img src="https://img.shields.io/badge/Deploy-Render-46E3B7?style=flat-square&logo=render&logoColor=white" />
+  <img src="https://img.shields.io/badge/Deploy-Cloud_Run-4285F4?style=flat-square&logo=googlecloud&logoColor=white" />
 </p>
 
 ---
@@ -79,7 +79,7 @@
 | **Tokenizer** | `tiktoken` (GPT-4 compatible) |
 | **Validation** | Pydantic v2 |
 | **Extension** | Chrome Manifest V3 |
-| **Deployment** | Docker + Render |
+| **Deployment** | Docker + Google Cloud Run (Mumbai) |
 
 ---
 
@@ -107,7 +107,7 @@ CTXR/
 │
 ├── 🧪 tests/                   # 61 automated tests
 ├── 📦 Dockerfile               # Production container
-├── 📋 render.yaml              # Render deployment blueprint
+├── 🚀 deploy.sh                # Google Cloud Run deploy script
 ├── 📄 requirements.txt
 └── 🚀 main.py                  # Application entrypoint
 ```
@@ -238,18 +238,26 @@ Optimizes raw prompts with 7-stage compression + optional AI rewriting.
 
 ## ☁️ Deployment
 
-The backend is deployed on **Render** with Docker:
-
-```
-Live API: https://contextforge-kub5.onrender.com
-```
+The backend is deployed on **Google Cloud Run** (Mumbai, `asia-south1`) with Docker:
 
 Deploy your own instance:
-1. Fork this repository
-2. Create a new **Web Service** on [Render](https://render.com)
-3. Connect your GitHub repo → Render auto-detects the `Dockerfile`
-4. Add `GEMINI_API_KEY` as an environment variable
-5. Deploy! 🚀
+
+### Prerequisites
+1. Install [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
+2. Run `gcloud auth login`
+3. Create or select a project: `gcloud config set project YOUR_PROJECT_ID`
+
+### One-Command Deploy
+```bash
+export GEMINI_API_KEY=your_key_here
+bash deploy.sh
+```
+
+The script will:
+- Enable required Google Cloud APIs
+- Build the Docker image via Cloud Build
+- Deploy to Cloud Run in Mumbai region
+- Output your live URL 🚀
 
 ---
 

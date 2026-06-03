@@ -1,3 +1,4 @@
+import re
 import fitz  # PyMuPDF
 import docx
 from pptx import Presentation
@@ -70,7 +71,6 @@ class LocalDocumentParser:
                                         if link_text in block_text_clean:
                                             block_text_clean = block_text_clean.replace(link_text, markdown_link, 1)
                                         else:
-                                            import re
                                             escaped = re.escape(link_text)
                                             pattern = re.sub(r'(\\\s|\\n|\n)+', r'\\s+', escaped)
                                             try:
