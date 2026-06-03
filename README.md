@@ -71,7 +71,7 @@ pip install -r requirements.txt
 ### 3. Environment Setup
 Configure your API credentials in `.env`:
 ```ini
-GEMINI_API_KEY=AIzaSyAmJl5XqVbMjvasCmsHOxFORVnOjbjQ-OM
+GEMINI_API_KEY= your Gemini api key
 ENVIRONMENT=development
 LOG_LEVEL=INFO
 ```
