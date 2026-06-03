@@ -1,0 +1,23 @@
+# Development & local files
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Secrets (set via Render dashboard env vars)
+.env
+.env.example
+
+# Non-backend directories
+extension/
+frontend/
+tests/
+docs/
+.vscode/
+.git/
+
+# Misc
+*.md
+test.pdf
+demo_normalized.md

@@ -1,0 +1,17 @@
+# Render Blueprint — ContextForge Backend
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: contextforge
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: PORT
+        value: "10000"

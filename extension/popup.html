@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTXR</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="panel">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-area">
+        <span class="logo-orb"></span>
+        <h1 class="logo-text">CTXR</h1>
+      </div>
+      <span class="badge" id="backend-status">Checking...</span>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="content-container">
+      <!-- Upload & Scrape / Prompt Optimizer Initial View -->
+      <div class="intro-box" id="intro-view">
+        <!-- Tab Switcher -->
+        <div class="tab-switcher">
+          <button class="tab-btn active" id="tab-documents" data-tab="doc-tab-content">Documents</button>
+          <button class="tab-btn" id="tab-prompt" data-tab="prompt-tab-content">Prompt</button>
+        </div>
+
+        <!-- Documents Tab Content -->
+        <div class="tab-content active" id="doc-tab-content">
+          <!-- Drag & Drop Zone -->
+          <div class="drop-zone" id="drop-zone">
+            <div class="drop-zone-content">
+              <span class="upload-icon">📥</span>
+              <span class="drop-text">Drag & Drop Document Here</span>
+              <span class="browse-text">or click to browse files</span>
+              <span class="format-text">Supports PDF, DOCX, PPTX, Images</span>
+            </div>
+            <input type="file" id="file-upload" class="hidden" accept=".pdf,.docx,.pptx,.png,.jpg,.jpeg,.webp">
+          </div>
+          
+          <div class="divider">
+            <span class="divider-line"></span>
+            <span class="divider-text">OR</span>
+            <span class="divider-line"></span>
+          </div>
+
+          <button class="btn btn-secondary" id="btn-forge">
+            Scrape Current Webpage
+          </button>
+        </div>
+
+        <!-- Prompt Optimizer Tab Content -->
+        <div class="tab-content" id="prompt-tab-content">
+          <textarea class="prompt-input" id="prompt-input" placeholder="Paste your prompt here to optimize it for fewer tokens..."></textarea>
+
+          <button class="btn btn-primary btn-glow" id="btn-optimize-prompt">
+            ⚡ Optimize Prompt
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading View -->
+      <div class="loading-box hidden" id="loading-view">
+        <div class="spinner"></div>
+        <p class="loading-text" id="loading-status">Analyzing page semantics...</p>
+      </div>
+
+      <!-- Results & Markdown Preview View -->
+      <div class="results-box hidden" id="results-view">
+        <!-- Optimization Stats Scorecard -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Reduction</span>
+            <span class="metric-value text-green" id="metric-savings">0%</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Tokens Saved</span>
+            <span class="metric-value" id="metric-saved-count">0</span>
+          </div>
+        </div>
+
+        <!-- Optimization Techniques Applied (shown for prompt optimization) -->
+        <div class="techniques-container hidden" id="techniques-container">
+          <span class="techniques-label">Techniques Applied:</span>
+          <div class="techniques-badges" id="techniques-badges"></div>
+        </div>
+
+        <!-- Scrollable Reduced Markdown Output Preview -->
+        <div class="preview-container">
+          <div class="preview-header">
+            <span class="preview-title">Reduced Markdown Context</span>
+            <span class="preview-action" id="btn-copy-preview">Copy</span>
+          </div>
+          <textarea class="preview-area" id="markdown-preview" readonly></textarea>
+        </div>
+
+        <!-- Inject Action Button -->
+        <div class="action-container">
+          <button class="btn btn-primary btn-glow" id="btn-paste-inject">
+            Forge & Inject Context
+          </button>
+        </div>
+
+        <!-- Reset Button -->
+        <button class="btn btn-secondary" id="btn-reset">
+          Optimize Another Ingest
+        </button>
+      </div>
+    </main>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

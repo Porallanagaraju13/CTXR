@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# Environment Variables
+.env
+
+# Unit test / coverage reports
+.pytest_cache/
+
+# User-generated files / demo artifacts
+demo_normalized.md
+test.pdf
+
+# VS Code
+.vscode/
