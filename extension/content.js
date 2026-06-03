@@ -23,11 +23,18 @@
   // ── Backend Resolution ─────────────────────────────────────────
   async function resolveBackend() {
     if (API_URL) return;
-    for (const url of [LOCAL_API, LIVE_API]) {
+    const urls = [LIVE_API, LOCAL_API];
+    const checks = urls.map(async (url) => {
       try {
         const r = await fetch(`${url}/health`, { signal: AbortSignal.timeout(4000) });
-        if (r.ok) { API_URL = url; return; }
-      } catch (_) { /* try next */ }
+        if (r.ok) return url;
+      } catch (_) {}
+      throw new Error();
+    });
+    try {
+      API_URL = await Promise.any(checks);
+    } catch (_) {
+      // Both failed
     }
   }
 

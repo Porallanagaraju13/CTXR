@@ -25,26 +25,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function checkBackendStatus() {
   const statusBadge = document.getElementById("backend-status");
   
-  // Try live deployed backend first, then fall back to localhost
-  for (const url of [LIVE_API_URL, LOCAL_API_URL]) {
+  const urls = [LIVE_API_URL, LOCAL_API_URL];
+  const checks = urls.map(async (url) => {
     try {
       const response = await fetch(`${url}/health`, { signal: AbortSignal.timeout(8000) });
-      if (response.ok) {
-        isBackendOnline = true;
-        API_URL = url;
-        statusBadge.textContent = url === LIVE_API_URL ? "CLOUD" : "LOCAL";
-        statusBadge.className = "badge online";
-        return;
-      }
-    } catch (err) {
-      // Try next URL
-    }
+      if (response.ok) return url;
+    } catch (err) {}
+    throw new Error();
+  });
+
+  try {
+    const resolvedUrl = await Promise.any(checks);
+    isBackendOnline = true;
+    API_URL = resolvedUrl;
+    statusBadge.textContent = resolvedUrl === LIVE_API_URL ? "CLOUD" : "LOCAL";
+    statusBadge.className = "badge online";
+  } catch (err) {
+    // Neither backend reachable
+    isBackendOnline = false;
+    statusBadge.textContent = "STANDALONE";
+    statusBadge.className = "badge offline";
   }
-  
-  // Neither backend reachable
-  isBackendOnline = false;
-  statusBadge.textContent = "STANDALONE";
-  statusBadge.className = "badge offline";
 }
 
 async function checkActiveTabType() {
