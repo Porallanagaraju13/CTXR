@@ -1,5 +1,5 @@
 // CTXR Browser Popup Controller — V3 Upload & In-View Markdown preview
-const LIVE_API_URL = "https://contextforge.onrender.com";
+const LIVE_API_URL = "https://contextforge-kub5.onrender.com";
 const LOCAL_API_URL = "http://127.0.0.1:8000";
 let API_URL = LIVE_API_URL;  // Active backend URL (resolved at startup)
 

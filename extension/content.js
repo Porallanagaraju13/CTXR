@@ -1,7 +1,7 @@
 // CTXR Content Script — Inline Prompt Optimizer for LLM Chat Inputs
 (function () {
   // ── Configuration ──────────────────────────────────────────────
-  const LIVE_API = "https://contextforge.onrender.com";
+  const LIVE_API = "https://contextforge-kub5.onrender.com";
   const LOCAL_API = "http://127.0.0.1:8000";
   let API_URL = null;
 
